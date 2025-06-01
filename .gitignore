@@ -21,6 +21,8 @@ data/SisFall_Dataset/
 data/features/*.csv 
 data/features/*.npy 
 models/*.pkl 
+data/results/*.csv
+data/results/*.png
 
 # OS / Editor specific
 .DS_Store
