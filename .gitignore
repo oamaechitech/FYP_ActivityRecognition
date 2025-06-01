@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Spyder
+.spyproject/
+*.bak
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Large data files 
+data/SisFall_Dataset/
+data/features/*.csv 
+data/features/*.npy 
+models/*.pkl 
+
+# OS / Editor specific
+.DS_Store
+Thumbs.db
