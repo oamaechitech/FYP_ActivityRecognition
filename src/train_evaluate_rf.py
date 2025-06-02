@@ -6,7 +6,7 @@ import sys # For sys.exit()
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier0
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix, roc_auc_score, f1_score
 import matplotlib.pyplot as plt
 import seaborn as sns
