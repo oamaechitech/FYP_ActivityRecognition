@@ -3,22 +3,22 @@
 > **BSc Computer Science Final Year Project**  
 > **Academic Institution:** University of East Anglia (UEA)  
 > **Academic Classification:** First-Class Honours (Grade: **73.75%**)  
-> **Core Architecture:** Modular Python Signal Processing & Machine Learning Pipeline[cite: 21, 22, 23]
+> **Core Architecture:** Modular Python Signal Processing & Machine Learning Pipeline
 
 ---
 
 ## 📈 Project Overview & Key Achievements
-This project designs, implements, and critically evaluates a production-grade machine learning and deep learning pipeline to recognize human activities and detect falls using high-frequency wearable sensor telemetry from the **SisFall dataset**[cite: 21, 22, 23]. 
+This project designs, implements, and critically evaluates a production-grade machine learning and deep learning pipeline to recognize human activities and detect falls using high-frequency wearable sensor telemetry from the **SisFall dataset**. 
 
-By challenging the modern assumption that model scale always outpaces deliberate engineering, this framework evaluates traditional classifiers augmented with a custom 112-channel time-frequency domain feature extraction pipeline against an end-to-end Long Short-Term Memory (LSTM) recurrent neural network[cite: 21, 22, 23].
+By challenging the modern assumption that model scale always outpaces deliberate engineering, this framework evaluates traditional classifiers augmented with a custom 112-channel time-frequency domain feature extraction pipeline against an end-to-end Long Short-Term Memory (LSTM) recurrent neural network.
 
 ### 📊 Performance Benchmarks
-Through rigorous validation utilizing SMOTE class-balancing and 5-fold stratified cross-validation, the optimized, feature-engineered K-Nearest Neighbours (KNN) model emerged as the definitive champion[cite: 21, 22, 23]:
+Through rigorous validation utilizing SMOTE class-balancing and 5-fold stratified cross-validation, the optimized, feature-engineered K-Nearest Neighbours (KNN) model emerged as the definitive champion:
 
 | Model Architecture | Average Accuracy | Fall Class F1-Score | Compute Latency / Resource Cost |
 | :--- | :--- | :--- | :--- |
-| **Feature-Engineered KNN** | **99.54%**[cite: 21, 22, 23] | **0.993**[cite: 21, 23] | **Ultra-Low (Real-time Deployment Ready)** |
-| End-to-End LSTM Network | 96.77%[cite: 21, 22, 23] | 0.942[cite: 21] | High (Compute Intensive) |
+| **Feature-Engineered KNN** | **99.54%** | **0.993** | **Ultra-Low (Real-time Deployment Ready)** |
+| End-to-End LSTM Network | 96.77% | 0.942 | High (Compute Intensive) |
 | Random Forest | 98.10% | 0.975 | Moderate |
 | Support Vector Machine (SVM) | 97.45% | 0.961 | Moderate |
 
