@@ -5,9 +5,9 @@ import numpy as np
 import pandas as pd
 from scipy.fft import fft
 from scipy.stats import skew, kurtosis, entropy
-from typing import List, Dict, Union
+from typing import List, Dict
 
-import config # Assuming config.py is in the same directory or accessible
+import config 
 
 # --- Helper for Magnitude ---
 def calculate_magnitude(df_window: pd.DataFrame, acc_cols: List[str], gyro_cols: List[str]) -> pd.DataFrame:
@@ -47,7 +47,7 @@ def get_time_domain_features(series: pd.Series) -> Dict[str, float]:
     features['q25'] = series.quantile(0.25) # 25th centile
     features['q75'] = series.quantile(0.75) # 75th centile
     features['iqr'] = features['q75'] - features['q25']
-    features['skew'] = skew(series)         # From your progress report
+    features['skew'] = skew(series)         
     features['kurt'] = kurtosis(series)     # Kurtosis can also be useful
     return features
 

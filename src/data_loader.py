@@ -3,10 +3,9 @@
 
 import os
 import pandas as pd
-import numpy as np
-from typing import List, Tuple, Dict, Optional
+from typing import List, Dict, Optional
 
-# Assuming config.py is in the same directory or accessible in PYTHONPATH
+
 import config
 
 def get_subject_activity_files(subject_id: str, activity_id: str) -> List[str]:
@@ -48,7 +47,6 @@ def load_sisall_file(file_path: str) -> Optional[pd.DataFrame]:
     Returns:
         Optional[pd.DataFrame]: DataFrame with selected sensor readings, or None if loading fails.
     """
-    print(f"INFO: Attempting to load: {file_path}")
     try:
         col_names_raw_ordered = [
             'raw_acc1_x', 'raw_acc1_y', 'raw_acc1_z',
@@ -67,7 +65,6 @@ def load_sisall_file(file_path: str) -> Optional[pd.DataFrame]:
                 df.iloc[:, -1] = df.iloc[:, -1].astype(str).str.rstrip(';')
             df.columns = col_names_raw_ordered
         elif df.shape[1] == 1 and isinstance(df.iloc[0,0], str) and df.iloc[0,0].count(';') > 0 and df.iloc[0,0].count(';') == df.iloc[0,0].count(','):
-            print(f"INFO: Possibly all data in one column for {file_path}. Trying to split again.")
             data_lines = []
             with open(file_path, 'r') as f:
                 for line in f:
@@ -119,8 +116,6 @@ def load_sisall_file(file_path: str) -> Optional[pd.DataFrame]:
 
         if rows_before_dropna > 0 and rows_after_dropna == 0:
             print(f"Warning: All rows were dropped by dropna() for {file_path}. Check for widespread NaNs.")
-        elif rows_before_dropna > rows_after_dropna :
-             print(f"INFO: Dropped {rows_before_dropna - rows_after_dropna} rows with NaNs from {file_path}.")
 
         if df_selected.empty:
             print(f"Warning: DataFrame is empty after all processing for file: {file_path}")
@@ -137,7 +132,7 @@ def load_sisall_file(file_path: str) -> Optional[pd.DataFrame]:
         traceback.print_exc()
         return None
 
-# --- ADD THESE FUNCTIONS BACK IN ---
+
 def get_all_subject_ids() -> List[str]:
     """
     Scans the SisFall dataset path and returns a list of all subject IDs (folder names).
@@ -151,9 +146,8 @@ def get_all_subject_ids() -> List[str]:
         
     for item_name in os.listdir(config.SISFALL_DATASET_PATH):
         item_path = os.path.join(config.SISFALL_DATASET_PATH, item_name)
-        # Assuming subject folders start with 'S' (e.g., SA, SE)
-        # And are directories
-        if os.path.isdir(item_path) and item_name.upper().startswith('S'): # Use .upper() for case-insensitivity if needed
+       
+        if os.path.isdir(item_path) and item_name.upper().startswith('S'):
             subject_ids.append(item_name)
     return sorted(subject_ids)
 
@@ -170,62 +164,17 @@ def get_all_activity_codes_for_subject(subject_id: str) -> Dict[str, List[str]]:
         return {}
 
     for filename in os.listdir(subject_folder_path):
-        if filename.endswith(".txt"): # Or other extension
+        if filename.endswith(".txt"):
             parts = filename.split('_')
             # Example: D01_SA01_R01.txt
-            if len(parts) == 3 and parts[1].upper() == subject_id.upper(): # Compare subject_id case-insensitively
+            if len(parts) == 3 and parts[1].upper() == subject_id.upper():
                 activity_code = parts[0]
                 file_path = os.path.join(subject_folder_path, filename)
                 if activity_code not in activity_files_map:
                     activity_files_map[activity_code] = []
                 activity_files_map[activity_code].append(file_path)
     
-    for code in activity_files_map: # Sort trial files
+    for code in activity_files_map:
         activity_files_map[code].sort()
         
     return activity_files_map
-# --- END OF ADDED FUNCTIONS ---
-
-if __name__ == "__main__":
-    print("--- Data Loader Test ---")
-    
-    subject_ids = get_all_subject_ids() # Now this function exists
-    if not subject_ids:
-        print("No subject IDs found. Ensure SISFALL_DATASET_PATH in config.py is correct and dataset is present.")
-    else:
-        print(f"Found {len(subject_ids)} subjects. First 5: {subject_ids[:5]}")
-
-        if subject_ids:
-            test_subject = subject_ids[0] 
-            print(f"\nTesting for subject: {test_subject}")
-            
-            activities_for_subject = get_all_activity_codes_for_subject(test_subject) # Now this function exists
-            if not activities_for_subject:
-                print(f"No activities found for subject {test_subject}")
-            else:
-                test_file_path = os.path.join(config.SISFALL_DATASET_PATH, test_subject, "D11_SA01_R02.txt")
-                if not os.path.exists(test_file_path):
-                     first_activity_code = sorted(list(activities_for_subject.keys()))[0]
-                     if activities_for_subject[first_activity_code]: # Check if list is not empty
-                        test_file_path = activities_for_subject[first_activity_code][0]
-                     else:
-                         print(f"No trial files found for activity {first_activity_code} of subject {test_subject}")
-                         test_file_path = None # Prevent error if no files
-                
-                if test_file_path:
-                    print(f"Attempting to load file: {test_file_path}")
-                    df_sample = load_sisall_file(test_file_path)
-
-                    if df_sample is not None and not df_sample.empty:
-                        print(f"\nSuccessfully loaded {test_file_path}:")
-                        print(f"Shape: {df_sample.shape}")
-                        print("Head:")
-                        print(df_sample.head())
-                        print("\nInfo:")
-                        df_sample.info() 
-                        print("\nDescribe:")
-                        print(df_sample.describe())
-                    else:
-                        print(f"Failed to load or resulted in empty DataFrame for {test_file_path}.")
-                else:
-                    print(f"No suitable test file path determined for subject {test_subject}")

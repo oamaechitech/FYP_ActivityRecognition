@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import time # To time model training
 
-from sklearn.model_selection import StratifiedKFold # GridSearchCV removed for this version as not fully implemented previously
+from sklearn.model_selection import StratifiedKFold 
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -85,7 +85,7 @@ def train_and_evaluate_model(model, model_name, X_train, y_train, X_test, y_test
     Returns a dictionary of metrics.
     """
     metrics = {}
-    X_train_processed = X_train.copy() # Use .copy() to avoid modifying original fold data
+    X_train_processed = X_train.copy() 
     y_train_processed = y_train.copy()
 
     if use_smote_for_this_model:
@@ -148,7 +148,7 @@ def train_and_evaluate_model(model, model_name, X_train, y_train, X_test, y_test
 
 if __name__ == "__main__":
     # --- Global Configuration for this script run ---
-    USE_SMOTE_GLOBALLY = True # SET THIS TO True or False 
+    USE_SMOTE_GLOBALLY = True  
     
     smote_file_suffix = "_with_SMOTE" if USE_SMOTE_GLOBALLY else "_no_SMOTE"
     print(f"--- Model Training and Evaluation with Cross-Validation (Global SMOTE Setting: {USE_SMOTE_GLOBALLY}) ---")
@@ -192,7 +192,7 @@ if __name__ == "__main__":
             max_depth=3,       
             random_state=config.RANDOM_SEED
         ),
-        "DecisionTree": DecisionTreeClassifier( # Corrected class_weight logic
+        "DecisionTree": DecisionTreeClassifier(
             random_state=config.RANDOM_SEED,
             class_weight='balanced' if not USE_SMOTE_GLOBALLY else None 
         ),
@@ -229,7 +229,7 @@ if __name__ == "__main__":
         aggregated_metrics = {}
         if fold_metrics_list: # Ensure list is not empty
             for key in fold_metrics_list[0].keys(): 
-                values = [m[key] for m in fold_metrics_list if m is not None and key in m] # Added check for None and key
+                values = [m[key] for m in fold_metrics_list if m is not None and key in m] # check for None and key
                 if values: # Ensure there are values to process
                     aggregated_metrics[f'avg_{key}'] = np.nanmean(values)
                     aggregated_metrics[f'std_{key}'] = np.nanstd(values)
